@@ -10,6 +10,8 @@
   <a href="#" class="logo" onclick="openLinks(event)">GPG</a>
   <a href="https://soundcloud.com/cur16-217319836" target="_blank" class="float-btn">1</a>
 
+  <audio id="bgAudio" src="audio/gpg%20tag.flac" loop></audio>
+
   <div class="void"></div>
 
   <script>
@@ -19,7 +21,12 @@
       window.open("https://soundcloud.com/cur16-217319836", "_blank");
     }
 
-    // genera stelle/punti casuali nel vuoto
+    document.addEventListener('click', function startAudio() {
+      const audio = document.getElementById('bgAudio');
+      audio.play().catch(err => console.log("Autoplay bloccato:", err));
+      document.removeEventListener('click', startAudio);
+    });
+
     const voidEl = document.querySelector('.void');
     const numStars = 400;
     for (let i = 0; i < numStars; i++) {
