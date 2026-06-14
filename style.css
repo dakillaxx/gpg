@@ -35,18 +35,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
-  color: #000000;
-  font-family: sans-serif;
+  background-color: transparent;
+  color: #ffffff;
+  font-family: "Times New Roman", Times, serif;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   border-radius: 50%;
   text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: opacity 0.2s ease, transform 0.1s ease;
 }
 
 .float-btn:hover {
-  background-color: #cccccc;
+  opacity: 0.7;
 }
 
 .float-btn:active {
