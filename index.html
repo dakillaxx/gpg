@@ -8,14 +8,30 @@
 </head>
 <body>
   <a href="#" class="logo" onclick="openLinks(event)">GPG</a>
-
   <a href="https://soundcloud.com/cur16-217319836" target="_blank" class="float-btn">1</a>
+
+  <div class="void"></div>
 
   <script>
     function openLinks(e) {
       e.preventDefault();
       window.open("https://soundcloud.com/ilovehousemusick", "_blank");
       window.open("https://soundcloud.com/cur16-217319836", "_blank");
+    }
+
+    // genera stelle/punti casuali nel vuoto
+    const voidEl = document.querySelector('.void');
+    const numStars = 400;
+    for (let i = 0; i < numStars; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      const size = Math.random() * 3 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.opacity = Math.random() * 0.8 + 0.1;
+      voidEl.appendChild(star);
     }
   </script>
 </body>
