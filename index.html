@@ -7,6 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a href="#" class="logo">GPG</a>
+  <a href="#" class="logo" onclick="openLinks(event)">GPG</a>
+
+  <script>
+    function openLinks(e) {
+      e.preventDefault();
+      window.open("https://soundcloud.com/ilovehousemusick", "_blank");
+      window.open("https://soundcloud.com/cur16-217319836", "_blank");
+    }
+  </script>
 </body>
 </html>
