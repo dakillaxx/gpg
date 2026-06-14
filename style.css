@@ -63,7 +63,7 @@ body {
 .void {
   position: relative;
   width: 100%;
-  height: 3000vh; /* molto lungo: scroll lungo nel vuoto */
+  height: 3000vh;
   background-color: #000000;
 }
 
