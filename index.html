@@ -7,19 +7,38 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <span class="logo">GPG</span>
+  <span class="logo" onclick="openVideo()">GPG</span>
 
   <a href="https://soundcloud.com/cur16-217319836" target="_blank" class="float-btn left">1</a>
   <a href="https://soundcloud.com/ilovehousemusick" target="_blank" class="float-btn right">2</a>
 
   <audio id="bgAudio" src="audio/gpg%20tag.flac"></audio>
 
+  <div id="videoOverlay" class="overlay hidden">
+    <div class="video-container">
+      <button class="close-btn" onclick="closeVideo()">✕</button>
+      <video id="player" controls>
+        <source src="https://github.com/dakillaxx/gpg/releases/download/1.0/im.never.drinking.again.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
   <script>
     document.addEventListener('click', function startAudio() {
       const audio = document.getElementById('bgAudio');
-      audio.play().catch(err => console.log("Autoplay bloccato:", err));
+      audio.play().catch(err => console.log(err));
       document.removeEventListener('click', startAudio);
     });
+
+    function openVideo() {
+      document.getElementById('videoOverlay').classList.remove('hidden');
+    }
+
+    function closeVideo() {
+      const overlay = document.getElementById('videoOverlay');
+      overlay.classList.add('hidden');
+      document.getElementById('player').pause();
+    }
   </script>
 </body>
 </html>
