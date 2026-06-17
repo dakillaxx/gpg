@@ -7,12 +7,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <span class="logo">GPG</span>
+  <span class="logo" onclick="openVideo()">GPG</span>
 
   <a href="https://soundcloud.com/cur16-217319836" target="_blank" class="float-btn left">1</a>
   <a href="https://soundcloud.com/ilovehousemusick" target="_blank" class="float-btn right">2</a>
 
   <audio id="bgAudio" src="audio/gpg%20tag.flac"></audio>
+
+  <div id="videoOverlay" class="overlay hidden">
+    <div class="video-container">
+      <button class="close-btn" onclick="closeVideo()">✕</button>
+      <video id="player" controls>
+        <source src="https://graziepapagrazie.xyz/im%20never%20drinking%20again.mp4">
+      </video>
+    </div>
+  </div>
 
   <script>
     document.addEventListener('click', function startAudio() {
@@ -20,6 +29,16 @@
       audio.play().catch(err => console.log(err));
       document.removeEventListener('click', startAudio);
     });
+
+    function openVideo() {
+      document.getElementById('videoOverlay').classList.remove('hidden');
+    }
+
+    function closeVideo() {
+      const overlay = document.getElementById('videoOverlay');
+      overlay.classList.add('hidden');
+      document.getElementById('player').pause();
+    }
   </script>
 </body>
 </html>
