@@ -216,6 +216,31 @@ body {
   border-radius: 50%;
 }
 
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+#volumeBar {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 2px;
+  background: #333;
+  outline: none;
+  cursor: pointer;
+}
+
+#volumeBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
 .track-panel {
   flex: 1;
   overflow-y: auto;
