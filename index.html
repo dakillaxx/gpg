@@ -12,33 +12,220 @@
   <a href="https://soundcloud.com/cur16-217319836" target="_blank" class="float-btn left">1</a>
   <a href="https://soundcloud.com/ilovehousemusick" target="_blank" class="float-btn right">2</a>
 
+  <div class="bottom-nav">
+    <span onclick="openReleases()">releases</span>
+    <span>about</span>
+  </div>
+
   <audio id="bgAudio" src="audio/gpg%20tag.flac"></audio>
 
   <div id="videoOverlay" class="overlay hidden">
     <div class="video-container">
       <button class="close-btn" onclick="closeVideo()">✕</button>
-      <video id="player" controls crossorigin="anonymous">
-  <source src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/videos/output.webm" type="video/webm">
-</video>
+      <video id="videoPlayer" controls crossorigin="anonymous">
+        <source src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/videos/output.webm" type="video/webm">
+      </video>
+    </div>
+  </div>
+
+  <div id="releasesOverlay" class="overlay hidden">
+    <div class="releases-container">
+      <button class="close-btn releases-close" onclick="closeReleases()">✕</button>
+
+      <div class="player-panel">
+        <img id="playerCover" src="" alt="">
+        <div class="player-meta">
+          <span id="playerTitle">—</span>
+          <span id="playerAlbum">—</span>
+        </div>
+        <canvas id="visualizer" width="280" height="60"></canvas>
+        <div class="controls">
+          <button onclick="prevTrack()">⏮</button>
+          <button onclick="togglePlay()" id="playBtn">▶</button>
+          <button onclick="nextTrack()">⏭</button>
+        </div>
+        <div class="progress-bar-container">
+          <span id="currentTime">0:00</span>
+          <input type="range" id="progressBar" value="0" min="0" max="100" step="0.1">
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+
+      <div class="track-panel">
+        <div class="release-section">
+          <div class="release-label">B4GPG — Album</div>
+          <div class="track-item" onclick="loadTrack(0)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/B4GPG.jpg">
+            <span>INTRO</span>
+          </div>
+          <div class="track-item" onclick="loadTrack(1)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/B4GPG.jpg">
+            <span>GO2LEGNANO</span>
+          </div>
+          <div class="track-item" onclick="loadTrack(2)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/B4GPG.jpg">
+            <span>YaYei</span>
+          </div>
+          <div class="track-item" onclick="loadTrack(3)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/B4GPG.jpg">
+            <span>MARYVALLE</span>
+          </div>
+          <div class="track-item" onclick="loadTrack(4)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/B4GPG.jpg">
+            <span>Typical House Song 1</span>
+          </div>
+        </div>
+
+        <div class="release-section">
+          <div class="release-label">Singoli</div>
+          <div class="track-item" onclick="loadTrack(5)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/MERCY.jpg">
+            <span>MERCY</span>
+          </div>
+          <div class="track-item" onclick="loadTrack(6)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/biscotti%20secchi%20%26%20juice%20(la%20merenda%20perfetta).jpg">
+            <span>biscotti secchi & juice (la merenda perfetta)</span>
+          </div>
+          <div class="track-item" onclick="loadTrack(7)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/faccio%20tardi%20p%20gpg.jpg">
+            <span>faccio tardi p gpg</span>
+          </div>
+          <div class="track-item" onclick="loadTrack(8)">
+            <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/covers/your%20love%20prod%20gpg.jpg">
+            <span>your love prod gpg</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
+    const R2 = "https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev";
+
+    const tracks = [
+      { title: "INTRO", album: "B4GPG", cover: `${R2}/covers/B4GPG.jpg`, src: `${R2}/music/INTRO.wav` },
+      { title: "GO2LEGNANO", album: "B4GPG", cover: `${R2}/covers/B4GPG.jpg`, src: `${R2}/music/GO2LEGNANO.wav` },
+      { title: "YaYei", album: "B4GPG", cover: `${R2}/covers/B4GPG.jpg`, src: `${R2}/music/YaYei.wav` },
+      { title: "MARYVALLE", album: "B4GPG", cover: `${R2}/covers/B4GPG.jpg`, src: `${R2}/music/MARYVALLE.wav` },
+      { title: "Typical House Song 1", album: "B4GPG", cover: `${R2}/covers/B4GPG.jpg`, src: `${R2}/music/Typical%20House%20Song%201.wav` },
+      { title: "MERCY", album: "Singolo", cover: `${R2}/covers/MERCY.jpg`, src: `${R2}/music/MERCY.wav` },
+      { title: "biscotti secchi & juice (la merenda perfetta)", album: "Singolo", cover: `${R2}/covers/biscotti%20secchi%20%26%20juice%20(la%20merenda%20perfetta).jpg`, src: `${R2}/music/biscotti%20secchi%20%26%20juice%20(la%20merenda%20perfetta).wav` },
+      { title: "faccio tardi p gpg", album: "Singolo", cover: `${R2}/covers/faccio%20tardi%20p%20gpg.jpg`, src: `${R2}/music/faccio%20tardi%20p%20gpg.wav` },
+      { title: "your love prod gpg", album: "Singolo", cover: `${R2}/covers/your%20love%20prod%20gpg.jpg`, src: `${R2}/music/your%20love%20prod%20gpg.wav` },
+    ];
+
+    let audioCtx = null;
+    let analyser = null;
+    let sourceNode = null;
+    let animationId = null;
+    let currentIndex = -1;
+    let isPlaying = false;
+
+    const audio = new Audio();
+    audio.crossOrigin = "anonymous";
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 128;
+        sourceNode = audioCtx.createMediaElementSource(audio);
+        sourceNode.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      }
+    }
+
+    function loadTrack(index) {
+      currentIndex = index;
+      const track = tracks[index];
+      audio.src = track.src;
+      document.getElementById('playerCover').src = track.cover;
+      document.getElementById('playerTitle').textContent = track.title;
+      document.getElementById('playerAlbum').textContent = track.album;
+      document.querySelectorAll('.track-item').forEach((el, i) => {
+        el.classList.toggle('active', i === index);
+      });
+      initAudioContext();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      audio.play();
+      isPlaying = true;
+      document.getElementById('playBtn').textContent = '⏸';
+      if (animationId) cancelAnimationFrame(animationId);
+      drawVisualizer();
+    }
+
+    function togglePlay() {
+      if (currentIndex === -1) { loadTrack(0); return; }
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        document.getElementById('playBtn').textContent = '▶';
+        if (animationId) cancelAnimationFrame(animationId);
+      } else {
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        audio.play();
+        isPlaying = true;
+        document.getElementById('playBtn').textContent = '⏸';
+        drawVisualizer();
+      }
+    }
+
+    function prevTrack() { if (currentIndex > 0) loadTrack(currentIndex - 1); }
+    function nextTrack() { if (currentIndex < tracks.length - 1) loadTrack(currentIndex + 1); }
+
+    audio.addEventListener('timeupdate', () => {
+      const progress = (audio.currentTime / audio.duration) * 100;
+      document.getElementById('progressBar').value = progress || 0;
+      document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
+      document.getElementById('duration').textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('ended', () => nextTrack());
+
+    document.getElementById('progressBar').addEventListener('input', (e) => {
+      audio.currentTime = (e.target.value / 100) * audio.duration;
+    });
+
+    function formatTime(secs) {
+      if (!secs || isNaN(secs)) return '0:00';
+      const m = Math.floor(secs / 60);
+      const s = Math.floor(secs % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function drawVisualizer() {
+      const canvas = document.getElementById('visualizer');
+      const ctx = canvas.getContext('2d');
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      function draw() {
+        animationId = requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const barWidth = (canvas.width / bufferLength) * 2;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * canvas.height;
+          ctx.fillStyle = `rgba(255,255,255,${0.3 + (dataArray[i] / 255) * 0.7})`;
+          ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+          x += barWidth;
+        }
+      }
+      draw();
+    }
+
     document.addEventListener('click', function startAudio() {
-      const audio = document.getElementById('bgAudio');
-      audio.play().catch(err => console.log(err));
+      document.getElementById('bgAudio').play().catch(() => {});
       document.removeEventListener('click', startAudio);
     });
 
-    function openVideo() {
-      document.getElementById('videoOverlay').classList.remove('hidden');
-    }
-
+    function openVideo() { document.getElementById('videoOverlay').classList.remove('hidden'); }
     function closeVideo() {
-      const overlay = document.getElementById('videoOverlay');
-      overlay.classList.add('hidden');
-      document.getElementById('player').pause();
+      document.getElementById('videoOverlay').classList.add('hidden');
+      document.getElementById('videoPlayer').pause();
     }
+    function openReleases() { document.getElementById('releasesOverlay').classList.remove('hidden'); }
+    function closeReleases() { document.getElementById('releasesOverlay').classList.add('hidden'); }
   </script>
 </body>
 </html>
