@@ -14,7 +14,7 @@
 
   <div class="bottom-nav">
     <span onclick="openReleases()">releases</span>
-    <span onclick="openAbout()">about</span>
+    <span>about</span>
   </div>
 
   <audio id="bgAudio" src="audio/gpg%20tag.flac"></audio>
@@ -50,8 +50,9 @@
           <span id="duration">0:00</span>
         </div>
         <div class="volume-container">
-          <span class="vol-label">VOL</span>
+          🔈
           <input type="range" id="volumeBar" value="100" min="0" max="100" step="1">
+          🔊
         </div>
       </div>
 
@@ -100,13 +101,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div id="aboutOverlay" class="overlay hidden">
-    <div class="about-container">
-      <button class="close-btn about-close" onclick="closeAbout()">✕</button>
-      <span class="coming-soon">coming soon</span>
     </div>
   </div>
 
@@ -241,8 +235,6 @@
     }
     function openReleases() { document.getElementById('releasesOverlay').classList.remove('hidden'); }
     function closeReleases() { document.getElementById('releasesOverlay').classList.add('hidden'); }
-    function openAbout() { document.getElementById('aboutOverlay').classList.remove('hidden'); }
-    function closeAbout() { document.getElementById('aboutOverlay').classList.add('hidden'); }
   </script>
 </body>
 </html>
