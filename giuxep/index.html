@@ -16,17 +16,17 @@
   </header>
 
   <section class="archive-section">
-    <h2 class="section-title">photos</h2>
+    <h2 class="section-title">projects</h2>
+    <div id="projectsList" class="projects-list"></div>
+  </section>
+
+  <section class="archive-section">
+    <h2 class="section-title">media</h2>
+
+    <h3 class="subsection-title">photos</h3>
     <div id="photoGrid" class="photo-grid"></div>
-  </section>
 
-  <section class="archive-section">
-    <h2 class="section-title">audio</h2>
-    <div id="audioList" class="audio-list"></div>
-  </section>
-
-  <section class="archive-section">
-    <h2 class="section-title">video</h2>
+    <h3 class="subsection-title">videos</h3>
     <div id="videoGrid" class="video-grid"></div>
   </section>
 
@@ -39,26 +39,58 @@
 
     /* ============================================
        AGGIUNGI QUI I FILE.
-       Basta scrivere il nome del file caricato dentro
-       la cartella giuxep/ su R2 (es: giuxep/photos/, giuxep/audio/, giuxep/video/)
+       I file vanno caricati su R2 dentro:
+       giuxep/covers/  giuxep/music/  giuxep/photos/  giuxep/video/
        ============================================ */
+
+    // Ogni progetto è un album/EP/singolo con la sua cover e i suoi brani
+    const projects = [
+      // {
+      //   title: "Nome album",
+      //   cover: "cover1.jpg",
+      //   tracks: [
+      //     { title: "titolo brano", file: "brano1.mp3" },
+      //     { title: "titolo brano 2", file: "brano2.mp3" },
+      //   ]
+      // },
+    ];
 
     const photos = [
       // "foto1.jpg",
       // "foto2.jpg",
     ];
 
-    const audios = [
-      // { title: "titolo traccia", file: "traccia1.mp3" },
-    ];
-
     const videos = [
-      // { title: "titolo video", file: "video1.webm" },
+      // { title: "titolo video", file: "video1.mp4" },
     ];
 
     /* ============================================
        Non serve modificare da qui in giù
        ============================================ */
+
+    function renderProjects() {
+      const list = document.getElementById('projectsList');
+      if (projects.length === 0) {
+        list.innerHTML = '<p class="empty-msg">Nessun progetto ancora.</p>';
+        return;
+      }
+      list.innerHTML = projects.map(p => `
+        <div class="project-card">
+          <div class="project-header">
+            <img src="${R2}/covers/${encodeURIComponent(p.cover)}" class="project-cover" alt="">
+            <span class="project-title">${p.title}</span>
+          </div>
+          <div class="project-tracks">
+            ${p.tracks.map(t => `
+              <div class="track-row">
+                <span class="track-name">${t.title}</span>
+                <audio controls src="${R2}/music/${encodeURIComponent(t.file)}"></audio>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
 
     function renderPhotos() {
       const grid = document.getElementById('photoGrid');
@@ -69,20 +101,6 @@
       grid.innerHTML = photos.map(f => `
         <div class="photo-item" onclick="openLightbox('${R2}/photos/${encodeURIComponent(f)}')">
           <img src="${R2}/photos/${encodeURIComponent(f)}" loading="lazy" alt="">
-        </div>
-      `).join('');
-    }
-
-    function renderAudios() {
-      const list = document.getElementById('audioList');
-      if (audios.length === 0) {
-        list.innerHTML = '<p class="empty-msg">Nessun audio ancora.</p>';
-        return;
-      }
-      list.innerHTML = audios.map(a => `
-        <div class="audio-item">
-          <span class="audio-title">${a.title}</span>
-          <audio controls src="${R2}/audio/${encodeURIComponent(a.file)}"></audio>
         </div>
       `).join('');
     }
@@ -111,10 +129,9 @@
       document.getElementById('lightboxImg').src = '';
     }
 
+    renderProjects();
     renderPhotos();
-    renderAudios();
     renderVideos();
   </script>
 </body>
 </html>
-
