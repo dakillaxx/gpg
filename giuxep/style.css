@@ -1,177 +1,137 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>giuxep — archive</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-html, body {
-  background-color: #000000;
-}
+  <a href="/" class="back-link">← gpg</a>
 
-body {
-  min-height: 100vh;
-  padding: 80px 24px 60px;
-  font-family: sans-serif;
-}
+  <header class="archive-header">
+    <h1>GIUXEP</h1>
+    <p class="archive-subtitle">archive</p>
+  </header>
 
-.back-link {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  color: #ffffff;
-  font-family: "Courier New", monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
-  z-index: 10;
-}
+  <section class="archive-section">
+    <h2 class="section-title">projects</h2>
+    <div id="projectsList" class="projects-list"></div>
+  </section>
 
-.back-link:hover { opacity: 1; }
+  <section class="archive-section">
+    <h2 class="section-title">media</h2>
 
-.archive-header {
-  text-align: center;
-  margin-bottom: 60px;
-}
+    <h3 class="subsection-title">photos</h3>
+    <div id="photoGrid" class="photo-grid"></div>
 
-.archive-header h1 {
-  color: #ffffff;
-  font-size: 2.4rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
+    <h3 class="subsection-title">videos</h3>
+    <div id="videoGrid" class="video-grid"></div>
+  </section>
 
-.archive-subtitle {
-  color: #555;
-  font-family: "Courier New", monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-top: 8px;
-}
+  <div id="lightbox" class="lightbox hidden" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="">
+  </div>
 
-.archive-section {
-  max-width: 1100px;
-  margin: 0 auto 64px;
-}
+  <script>
+    const R2 = "https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/giuxep";
 
-.section-title {
-  color: #444;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #1a1a1a;
-  margin-bottom: 20px;
-}
+    /* ============================================
+       AGGIUNGI QUI I FILE.
+       I file vanno caricati su R2 dentro:
+       giuxep/covers/  giuxep/music/  giuxep/photos/  giuxep/video/
+       ============================================ */
 
-/* Photo grid */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 4px;
-}
+    // Ogni progetto è un album/EP/singolo con la sua cover e i suoi brani
+    const projects = [
+      // {
+      //   title: "Nome album",
+      //   cover: "cover1.jpg",
+      //   tracks: [
+      //     { title: "titolo brano", file: "brano1.mp3" },
+      //     { title: "titolo brano 2", file: "brano2.mp3" },
+      //   ]
+      // },
+    ];
 
-.photo-item {
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  cursor: pointer;
-  background: #0a0a0a;
-}
+    const photos = [
+      // "foto1.jpg",
+      // "foto2.jpg",
+    ];
 
-.photo-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0.85;
-}
+    const videos = [
+      // { title: "titolo video", file: "video1.mp4" },
+    ];
 
-.photo-item:hover img {
-  transform: scale(1.04);
-  opacity: 1;
-}
+    /* ============================================
+       Non serve modificare da qui in giù
+       ============================================ */
 
-/* Audio list */
-.audio-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+    function renderProjects() {
+      const list = document.getElementById('projectsList');
+      if (projects.length === 0) {
+        list.innerHTML = '<p class="empty-msg">Nessun progetto ancora.</p>';
+        return;
+      }
+      list.innerHTML = projects.map(p => `
+        <div class="project-card">
+          <div class="project-header">
+            <img src="${R2}/covers/${encodeURIComponent(p.cover)}" class="project-cover" alt="">
+            <span class="project-title">${p.title}</span>
+          </div>
+          <div class="project-tracks">
+            ${p.tracks.map(t => `
+              <div class="track-row">
+                <span class="track-name">${t.title}</span>
+                <audio controls src="${R2}/music/${encodeURIComponent(t.file)}"></audio>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
 
-.audio-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px;
-  background: #0a0a0a;
-  border-radius: 4px;
-  flex-wrap: wrap;
-}
+    function renderPhotos() {
+      const grid = document.getElementById('photoGrid');
+      if (photos.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">Nessuna foto ancora.</p>';
+        return;
+      }
+      grid.innerHTML = photos.map(f => `
+        <div class="photo-item" onclick="openLightbox('${R2}/photos/${encodeURIComponent(f)}')">
+          <img src="${R2}/photos/${encodeURIComponent(f)}" loading="lazy" alt="">
+        </div>
+      `).join('');
+    }
 
-.audio-title {
-  color: #ccc;
-  font-size: 0.85rem;
-  min-width: 140px;
-}
+    function renderVideos() {
+      const grid = document.getElementById('videoGrid');
+      if (videos.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">Nessun video ancora.</p>';
+        return;
+      }
+      grid.innerHTML = videos.map(v => `
+        <div class="video-item">
+          <video controls src="${R2}/video/${encodeURIComponent(v.file)}"></video>
+          <span class="video-title">${v.title}</span>
+        </div>
+      `).join('');
+    }
 
-.audio-item audio {
-  flex: 1;
-  min-width: 220px;
-  height: 32px;
-}
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.remove('hidden');
+    }
 
-/* Video grid */
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.add('hidden');
+      document.getElementById('lightboxImg').src = '';
+    }
 
-.video-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.video-item video {
-  width: 100%;
-  border-radius: 4px;
-  background: #0a0a0a;
-}
-
-.video-title {
-  color: #777;
-  font-size: 0.78rem;
-}
-
-.empty-msg {
-  color: #333;
-  font-size: 0.8rem;
-  font-style: italic;
-}
-
-/* Lightbox */
-.lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.95);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  cursor: zoom-out;
-}
-
-.lightbox.hidden { display: none; }
-
-.lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
-}
+    renderProjects();
+    renderPhotos();
+    renderVideos();
+  </script>
+</body>
+</html>
