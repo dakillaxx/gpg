@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>giuxep — archive</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a href="/" class="back-link">← gpg</a>
+
+  <header class="archive-header">
+    <h1>GIUXEP</h1>
+    <p class="archive-subtitle">archive</p>
+  </header>
+
+  <section class="archive-section">
+    <h2 class="section-title">photos</h2>
+    <div id="photoGrid" class="photo-grid"></div>
+  </section>
+
+  <section class="archive-section">
+    <h2 class="section-title">audio</h2>
+    <div id="audioList" class="audio-list"></div>
+  </section>
+
+  <section class="archive-section">
+    <h2 class="section-title">video</h2>
+    <div id="videoGrid" class="video-grid"></div>
+  </section>
+
+  <div id="lightbox" class="lightbox hidden" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <script>
+    const R2 = "https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/giuxep";
+
+    /* ============================================
+       AGGIUNGI QUI I FILE.
+       Basta scrivere il nome del file caricato dentro
+       la cartella giuxep/ su R2 (es: giuxep/photos/, giuxep/audio/, giuxep/video/)
+       ============================================ */
+
+    const photos = [
+      // "foto1.jpg",
+      // "foto2.jpg",
+    ];
+
+    const audios = [
+      // { title: "titolo traccia", file: "traccia1.mp3" },
+    ];
+
+    const videos = [
+      // { title: "titolo video", file: "video1.webm" },
+    ];
+
+    /* ============================================
+       Non serve modificare da qui in giù
+       ============================================ */
+
+    function renderPhotos() {
+      const grid = document.getElementById('photoGrid');
+      if (photos.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">Nessuna foto ancora.</p>';
+        return;
+      }
+      grid.innerHTML = photos.map(f => `
+        <div class="photo-item" onclick="openLightbox('${R2}/photos/${encodeURIComponent(f)}')">
+          <img src="${R2}/photos/${encodeURIComponent(f)}" loading="lazy" alt="">
+        </div>
+      `).join('');
+    }
+
+    function renderAudios() {
+      const list = document.getElementById('audioList');
+      if (audios.length === 0) {
+        list.innerHTML = '<p class="empty-msg">Nessun audio ancora.</p>';
+        return;
+      }
+      list.innerHTML = audios.map(a => `
+        <div class="audio-item">
+          <span class="audio-title">${a.title}</span>
+          <audio controls src="${R2}/audio/${encodeURIComponent(a.file)}"></audio>
+        </div>
+      `).join('');
+    }
+
+    function renderVideos() {
+      const grid = document.getElementById('videoGrid');
+      if (videos.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">Nessun video ancora.</p>';
+        return;
+      }
+      grid.innerHTML = videos.map(v => `
+        <div class="video-item">
+          <video controls src="${R2}/video/${encodeURIComponent(v.file)}"></video>
+          <span class="video-title">${v.title}</span>
+        </div>
+      `).join('');
+    }
+
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.add('hidden');
+      document.getElementById('lightboxImg').src = '';
+    }
+
+    renderPhotos();
+    renderAudios();
+    renderVideos();
+  </script>
+</body>
+</html>
 
