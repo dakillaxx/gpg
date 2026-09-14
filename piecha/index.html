@@ -7,30 +7,36 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
- 
+
   <span class="piecha-text" id="piechaTrigger" onclick="goFullscreen()">PIECHA</span>
- 
+
   <div id="piechaImgWrap" class="piecha-img-wrap hidden">
     <img src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/piecha/piecha.png" alt="piecha" id="piechaImg">
   </div>
- 
+
+  <audio id="piechaAudio" src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/piecha/music.wav"></audio>
+
   <script>
     const trigger = document.getElementById('piechaTrigger');
     const imgWrap = document.getElementById('piechaImgWrap');
- 
+    const audio = document.getElementById('piechaAudio');
+
     function goFullscreen() {
       const el = document.documentElement;
       const request = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
       if (request) request.call(el);
       trigger.classList.add('hidden');
       imgWrap.classList.remove('hidden');
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
     }
- 
+
     function exitView() {
       trigger.classList.remove('hidden');
       imgWrap.classList.add('hidden');
+      audio.pause();
     }
- 
+
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) exitView();
     });
@@ -40,4 +46,3 @@
   </script>
 </body>
 </html>
- 
