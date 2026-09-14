@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>piecha</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+  <span class="piecha-text" id="piechaTrigger" onclick="goFullscreen()">PIECHA</span>
+ 
+  <div id="piechaImgWrap" class="piecha-img-wrap hidden">
+    <img src="piecha.png" alt="piecha" id="piechaImg">
+  </div>
+ 
+  <script>
+    const trigger = document.getElementById('piechaTrigger');
+    const imgWrap = document.getElementById('piechaImgWrap');
+ 
+    function goFullscreen() {
+      const el = document.documentElement;
+      const request = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+      if (request) request.call(el);
+      trigger.classList.add('hidden');
+      imgWrap.classList.remove('hidden');
+    }
+ 
+    function exitView() {
+      trigger.classList.remove('hidden');
+      imgWrap.classList.add('hidden');
+    }
+ 
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) exitView();
+    });
+    document.addEventListener('webkitfullscreenchange', () => {
+      if (!document.webkitFullscreenElement) exitView();
+    });
+  </script>
+</body>
+</html>
+ 
