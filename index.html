@@ -24,9 +24,7 @@
   <div id="videoOverlay" class="overlay hidden">
     <div class="video-container">
       <button class="close-btn" onclick="closeVideo()">✕</button>
-      <video id="videoPlayer" controls crossorigin="anonymous">
-        <source src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/videos/ninasimone.webm" type="video/webm">
-      </video>
+      <img id="videoPlayer" src="https://pub-ec161821185d4b0c876e22a4dc1b4c67.r2.dev/videos/mmt.gif" alt="">
     </div>
   </div>
 
@@ -246,7 +244,6 @@
     function openVideo() { document.getElementById('videoOverlay').classList.remove('hidden'); }
     function closeVideo() {
       document.getElementById('videoOverlay').classList.add('hidden');
-      document.getElementById('videoPlayer').pause();
     }
     function openReleases() { document.getElementById('releasesOverlay').classList.remove('hidden'); }
     function closeReleases() { document.getElementById('releasesOverlay').classList.add('hidden'); }
