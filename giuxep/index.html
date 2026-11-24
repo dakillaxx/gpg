@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>giuxep — archive</title>
+  <link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='black'/%3E%3Ctext x='32' y='48' font-family='Arial,sans-serif' font-size='44' font-weight='700' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -132,6 +133,33 @@
     renderProjects();
     renderPhotos();
     renderVideos();
+
+    // Favicon animata: G -> P -> G
+    (function () {
+      const letters = ['G', 'P', 'G'];
+      const favicon = document.getElementById('favicon');
+      const canvas = document.createElement('canvas');
+      canvas.width = 64;
+      canvas.height = 64;
+      const ctx = canvas.getContext('2d');
+      let i = 0;
+
+      function drawFavicon() {
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, 64, 64);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 44px Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(letters[i], 32, 36);
+        favicon.type = 'image/png';
+        favicon.href = canvas.toDataURL('image/png');
+        i = (i + 1) % letters.length;
+      }
+
+      drawFavicon();
+      setInterval(drawFavicon, 500);
+    })();
   </script>
 </body>
 </html>
