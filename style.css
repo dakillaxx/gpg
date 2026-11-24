@@ -73,10 +73,10 @@ body {
 
 .bottom-nav span:hover { opacity: 1; }
 
+.donate-link,
 .piecha-link {
   position: fixed;
   bottom: 24px;
-  right: 20px;
   color: #ffffff;
   font-family: "Courier New", monospace;
   font-size: 0.75rem;
@@ -87,7 +87,12 @@ body {
   z-index: 10;
 }
 
+.donate-link { left: 20px; }
+.piecha-link { right: 20px; }
+
+.donate-link:hover,
 .piecha-link:hover { opacity: 1; }
+
 
 .overlay {
   position: fixed;
